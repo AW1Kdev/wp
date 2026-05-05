@@ -21,7 +21,7 @@
 #include <dirent.h>
 
 #include "util.h"
-//#define CONFIG_PID_FILE_FORMAT "/var/run/quectel-CM-%s.pid" //for example /var/run/quectel-CM-wan.pid
+//#define CONFIG_PID_FILE_FORMAT "/var/run/quectel-CM-%s.pid" //for example /var/run/quectel-CM-wwan0.pid
 
 static PROFILE_T s_profile;
 int debug_qmi = 0;

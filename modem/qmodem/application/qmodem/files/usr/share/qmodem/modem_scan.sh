@@ -182,7 +182,7 @@ scan_pcie_slot_interfaces()
     done
     interface_mhi_path="$slot_path/mhi0"
     if [ ! -z "$interface_mhi_path" ]; then
-        wwan0_path="$slot_path/mhi0/wwan/wan"
+        wwan0_path="$slot_path/mhi0/wwan/wwan0"
         if [  -d "$wwan0_path" ];then
           dun_device=$(ls "$wwan0_path" | grep wwan0at0)
           [ ! -z "$dun_device" ] &&  dun_device_path="$wwan0_path/$dun_device"

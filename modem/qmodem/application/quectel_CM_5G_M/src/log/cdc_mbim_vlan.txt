@@ -1,20 +1,20 @@
 root@ZhuoTK:/# dmesg
 [  788.920000] usb 1-1.3: new high-speed USB device number 4 using ehci-platform
 [  789.160000] cdc_mbim 1-1.3:1.4: cdc-wdm0: USB WDM device
-[  789.170000] cdc_mbim 1-1.3:1.4 wan: register 'cdc_mbim' at usb-101c0000.ehci-1.3, CDC MBIM, a2:58:dc:4d:dd:ca
+[  789.170000] cdc_mbim 1-1.3:1.4 wwan0: register 'cdc_mbim' at usb-101c0000.ehci-1.3, CDC MBIM, a2:58:dc:4d:dd:ca
 
-root@ZhuoTK:/#  ip link add link wan name wan.1 type vlan id 1
-root@ZhuoTK:/#  ip link add link wan name wan.2 type vlan id 2
-root@ZhuoTK:/# ifconfig wan.1
-wan.1   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA  
+root@ZhuoTK:/#  ip link add link wwan0 name wwan0.1 type vlan id 1
+root@ZhuoTK:/#  ip link add link wwan0 name wwan0.2 type vlan id 2
+root@ZhuoTK:/# ifconfig wwan0.1
+wwan0.1   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA  
           BROADCAST NOARP MULTICAST  MTU:1500  Metric:1
           RX packets:0 errors:0 dropped:0 overruns:0 frame:0
           TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
           collisions:0 txqueuelen:0 
           RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
 
-root@ZhuoTK:/# ifconfig wan.2
-wan.2   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA  
+root@ZhuoTK:/# ifconfig wwan0.2
+wwan0.2   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA  
           BROADCAST NOARP MULTICAST  MTU:1500  Metric:1
           RX packets:0 errors:0 dropped:0 overruns:0 frame:0
           TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
@@ -31,9 +31,9 @@ root@ZhuoTK:/# quectel-CM -n 1 -s cmnet &
 [04-13_07:04:34:256] Quectel_QConnectManager_Linux_V1.6.0.25
 [04-13_07:04:34:259] Find /sys/bus/usb/devices/1-1.3 idVendor=0x2c7c idProduct=0x125, bus=0x001, dev=0x004
 [04-13_07:04:34:260] Auto find qmichannel = /dev/cdc-wdm0
-[04-13_07:04:34:260] Auto find usbnet_adapter = wan
+[04-13_07:04:34:260] Auto find usbnet_adapter = wwan0
 [04-13_07:04:34:260] netcard driver = cdc_mbim, driver version = 22-Aug-2005
-[04-13_07:04:34:261] mbim_qmap_mode = 4, vlan_id = 0x01, qmap_netcard = wan.1
+[04-13_07:04:34:261] mbim_qmap_mode = 4, vlan_id = 0x01, qmap_netcard = wwan0.1
 [04-13_07:04:34:261] Modem works in MBIM mode
 [04-13_07:04:34:261] handle_client_connect client_fd=5, client_idx=1
 [04-13_07:04:34:262] connect to quectel-mbim-proxy sockfd = 7
@@ -56,8 +56,8 @@ root@ZhuoTK:/# quectel-CM -n 1 -s cmnet &
 [04-13_07:04:35:329] PacketServiceState Unknown -> Attached 
 [04-13_07:04:35:330] mbim_query_connect(sessionID=1)
 [04-13_07:04:35:361] ActivationState Unknown -> Deactivated 
-[04-13_07:04:35:362] ifconfig wan.1 0.0.0.0
-[04-13_07:04:35:373] ifconfig wan.1 down
+[04-13_07:04:35:362] ifconfig wwan0.1 0.0.0.0
+[04-13_07:04:35:373] ifconfig wwan0.1 down
 [04-13_07:04:35:383] mbim_set_connect(onoff=1, sessionID=1)
 [04-13_07:04:35:426] ActivationState Deactivated -> Activated 
 [04-13_07:04:35:426] mbim_ip_config(sessionID=1)
@@ -73,20 +73,20 @@ root@ZhuoTK:/# quectel-CM -n 1 -s cmnet &
 [04-13_07:04:35:458] < dns1 = 211.138.180.2
 [04-13_07:04:35:458] < dns2 = 211.138.180.3
 [04-13_07:04:35:458] < ipv4 mtu = 1500
-[04-13_07:04:35:489] ifconfig wan up
-[04-13_07:04:35:509] ifconfig wan.1 down
-[04-13_07:04:35:522] ifconfig wan.1 up
-[04-13_07:04:35:535] ip -4 address flush dev wan.1
-[04-13_07:04:35:545] ip -4 address add 10.129.90.29/30 dev wan.1
-[04-13_07:04:35:556] ip -4 route add default via 10.129.90.30 dev wan.1
+[04-13_07:04:35:489] ifconfig wwan0 up
+[04-13_07:04:35:509] ifconfig wwan0.1 down
+[04-13_07:04:35:522] ifconfig wwan0.1 up
+[04-13_07:04:35:535] ip -4 address flush dev wwan0.1
+[04-13_07:04:35:545] ip -4 address add 10.129.90.29/30 dev wwan0.1
+[04-13_07:04:35:556] ip -4 route add default via 10.129.90.30 dev wwan0.1
 
 root@ZhuoTK:/# quectel-CM -n 2 -s 4gnet &
 [04-13_07:04:45:150] Quectel_QConnectManager_Linux_V1.6.0.25
 [04-13_07:04:45:152] Find /sys/bus/usb/devices/1-1.3 idVendor=0x2c7c idProduct=0x125, bus=0x001, dev=0x004
 [04-13_07:04:45:154] Auto find qmichannel = /dev/cdc-wdm0
-[04-13_07:04:45:154] Auto find usbnet_adapter = wan
+[04-13_07:04:45:154] Auto find usbnet_adapter = wwan0
 [04-13_07:04:45:154] netcard driver = cdc_mbim, driver version = 22-Aug-2005
-[04-13_07:04:45:155] mbim_qmap_mode = 4, vlan_id = 0x02, qmap_netcard = wan.2
+[04-13_07:04:45:155] mbim_qmap_mode = 4, vlan_id = 0x02, qmap_netcard = wwan0.2
 [04-13_07:04:45:155] Modem works in MBIM mode
 [04-13_07:04:45:155] handle_client_connect client_fd=6, client_idx=2
 [04-13_07:04:45:156] connect to quectel-mbim-proxy sockfd = 7
@@ -109,8 +109,8 @@ root@ZhuoTK:/# quectel-CM -n 2 -s 4gnet &
 [04-13_07:04:46:248] PacketServiceState Unknown -> Attached 
 [04-13_07:04:46:248] mbim_query_connect(sessionID=2)
 [04-13_07:04:46:280] ActivationState Unknown -> Deactivated 
-[04-13_07:04:46:280] ifconfig wan.2 0.0.0.0
-[04-13_07:04:46:291] ifconfig wan.2 down
+[04-13_07:04:46:280] ifconfig wwan0.2 0.0.0.0
+[04-13_07:04:46:291] ifconfig wwan0.2 down
 [04-13_07:04:46:304] mbim_set_connect(onoff=1, sessionID=2)
 [04-13_07:04:46:504] ActivationState Deactivated -> Activated 
 [04-13_07:04:46:505] mbim_ip_config(sessionID=2)
@@ -126,14 +126,14 @@ root@ZhuoTK:/# quectel-CM -n 2 -s 4gnet &
 [04-13_07:04:46:538] < dns1 = 211.138.180.2
 [04-13_07:04:46:538] < dns2 = 211.138.180.3
 [04-13_07:04:46:538] < ipv4 mtu = 1500
-[04-13_07:04:46:569] ifconfig wan up
-[04-13_07:04:46:579] ifconfig wan.2 up
-[04-13_07:04:46:592] ip -4 address flush dev wan.2
-[04-13_07:04:46:602] ip -4 address add 10.129.37.205/30 dev wan.2
-[04-13_07:04:46:613] ip -4 route add default via 10.129.37.206 dev wan.2
+[04-13_07:04:46:569] ifconfig wwan0 up
+[04-13_07:04:46:579] ifconfig wwan0.2 up
+[04-13_07:04:46:592] ip -4 address flush dev wwan0.2
+[04-13_07:04:46:602] ip -4 address add 10.129.37.205/30 dev wwan0.2
+[04-13_07:04:46:613] ip -4 route add default via 10.129.37.206 dev wwan0.2
 
-root@ZhuoTK:/# ifconfig wan.1
-wan.1   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA  
+root@ZhuoTK:/# ifconfig wwan0.1
+wwan0.1   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA  
           inet addr:10.129.90.29  Bcast:0.0.0.0  Mask:255.255.255.252
           inet6 addr: fe80::a058:dcff:fe4d:ddca/64 Scope:Link
           UP BROADCAST RUNNING NOARP MULTICAST  MTU:1500  Metric:1
@@ -142,8 +142,8 @@ wan.1   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA
           collisions:0 txqueuelen:0 
           RX bytes:304 (304.0 B)  TX bytes:1170 (1.1 KiB)
 
-root@ZhuoTK:/# ifconfig wan.2
-wan.2   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA  
+root@ZhuoTK:/# ifconfig wwan0.2
+wwan0.2   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA  
           inet addr:10.129.37.205  Bcast:0.0.0.0  Mask:255.255.255.252
           inet6 addr: fe80::a058:dcff:fe4d:ddca/64 Scope:Link
           UP BROADCAST RUNNING NOARP MULTICAST  MTU:1500  Metric:1
@@ -154,7 +154,7 @@ wan.2   Link encap:Ethernet  HWaddr A2:58:DC:4D:DD:CA
 
 root@ZhuoTK:/# ip ro del 8.8.8.8/32 
 RTNETLINK answers: No such process
-root@ZhuoTK:/# ip ro add 8.8.8.8/32 dev wan.1
+root@ZhuoTK:/# ip ro add 8.8.8.8/32 dev wwan0.1
 root@ZhuoTK:/# ping 8.8.8.8
 PING 8.8.8.8 (8.8.8.8): 56 data bytes
 64 bytes from 8.8.8.8: seq=0 ttl=52 time=98.584 ms
@@ -162,7 +162,7 @@ PING 8.8.8.8 (8.8.8.8): 56 data bytes
 root@ZhuoTK:/# ip ro del 8.8.8.8/32 
 root@ZhuoTK:/# ip ro del 8.8.8.8/32 
 RTNETLINK answers: No such process
-root@ZhuoTK:/# ip ro add 8.8.8.8/32 dev wan.2
+root@ZhuoTK:/# ip ro add 8.8.8.8/32 dev wwan0.2
 root@ZhuoTK:/# ping 8.8.8.8
 PING 8.8.8.8 (8.8.8.8): 56 data bytes
 64 bytes from 8.8.8.8: seq=0 ttl=111 time=101.770 ms

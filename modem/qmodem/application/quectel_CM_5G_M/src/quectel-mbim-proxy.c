@@ -386,8 +386,8 @@ error:
  * How to use this proxy?
  * 1. modprobe -a 8021q
  * 2. Create network interface for channels: 
- *      ip link add link wan name wan.1 type vlan id 1
- *      ip link add link wan name wan.2 type vlan id 2
+ *      ip link add link wwan0 name wwan0.1 type vlan id 1
+ *      ip link add link wwan0 name wwan0.2 type vlan id 2
  * 3. Start './mbim-proxy' with -d 'device'
  * 4. Start Clients: ./quectel-CM -n id1
  * 5. Start Clients: ./quectel-CM -n id2

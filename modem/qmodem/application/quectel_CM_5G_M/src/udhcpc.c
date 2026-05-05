@@ -352,7 +352,7 @@ static void update_ip_address_by_qmi(const char *ifname, const IPV4_T *ipv4, con
 //#define QL_OPENWER_NETWORK_SETUP
 #ifdef QL_OPENWER_NETWORK_SETUP
 static const char *openwrt_lan = "br-lan";
-static const char *openwrt_wan = "wan";
+static const char *openwrt_wan = "wwan0";
 
 static int ql_openwrt_system(const char *cmd) {
     int i;
@@ -690,12 +690,12 @@ set_ipv6:
             4. create /etc/dibbler/client.conf on your board, the content is
                 log-mode short
                 log-level 7
-                iface wan {
+                iface wwan0 {
                     ia
                     option dns-server
                 }
              5. run "dibbler-client start" to get ipV6 address
-             6. run "route -A inet6 add default dev wan" to add default route
+             6. run "route -A inet6 add default dev wwan0" to add default route
         */
         snprintf(shell_cmd, sizeof(shell_cmd), "route -A inet6 add default %s", ifname);
         ql_system(shell_cmd);

@@ -250,7 +250,7 @@ static int ql_qmi_qmap_mode_detect(PROFILE_T *profile) {
         if (n >= 5) {
             dbg_time("If use QMAP by /sys/class/net/%s/qmi/add_mux", profile->usbnet_adapter);
             #if 1
-            dbg_time("Please set mtu of wan >= max dl qmap packet size");
+            dbg_time("Please set mtu of wwan0 >= max dl qmap packet size");
             #else
             dbg_time("File:%s Line:%d Please make sure add next patch to qmi_wwan.c", __func__, __LINE__);
             /*

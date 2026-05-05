@@ -4,11 +4,11 @@ root@ZhuoTK:/# insmod qmi_wwan_q.ko qmap_mode=4
 [ 1530.500000] qmi_wwan_q 1-1.3:1.4: cdc-wdm0: USB WDM device
 [ 1530.500000] qmi_wwan_q 1-1.3:1.4: Quectel Android work on RawIP mode
 [ 1530.520000] qmi_wwan_q 1-1.3:1.4: rx_urb_size = 4096
-[ 1530.520000] qmi_wwan_q 1-1.3:1.4 wan: register 'qmi_wwan_q' at usb-101c0000.ehci-1.3, RMNET/USB device, da:0b:ce:b2:db:21
-[ 1530.530000] net wan: qmap_register_device wwan0_1
-[ 1530.540000] net wan: qmap_register_device wwan0_2
-[ 1530.550000] net wan: qmap_register_device wwan0_3
-[ 1530.550000] net wan: qmap_register_device wwan0_4
+[ 1530.520000] qmi_wwan_q 1-1.3:1.4 wwan0: register 'qmi_wwan_q' at usb-101c0000.ehci-1.3, RMNET/USB device, da:0b:ce:b2:db:21
+[ 1530.530000] net wwan0: qmap_register_device wwan0_1
+[ 1530.540000] net wwan0: qmap_register_device wwan0_2
+[ 1530.550000] net wwan0: qmap_register_device wwan0_3
+[ 1530.550000] net wwan0: qmap_register_device wwan0_4
 
 root@ZhuoTK:~# quectel-qmi-proxy &
 [04-13_03:44:53:958] Will use cdc-wdm='/dev/cdc-wdm0', proxy='quectel-qmi-proxy0'
@@ -39,7 +39,7 @@ root@ZhuoTK:/# quectel-CM -n 1 -s cmnet &
 root@ZhuoTK:/# [04-13_03:45:04:340] Quectel_QConnectManager_Linux_V1.6.0.25
 [04-13_03:45:04:343] Find /sys/bus/usb/devices/1-1.3 idVendor=0x2c7c idProduct=0x125, bus=0x001, dev=0x008
 [04-13_03:45:04:344] Auto find qmichannel = /dev/cdc-wdm0
-[04-13_03:45:04:344] Auto find usbnet_adapter = wan
+[04-13_03:45:04:344] Auto find usbnet_adapter = wwan0
 [04-13_03:45:04:345] netcard driver = qmi_wwan_q, driver version = V1.2.0.23
 [04-13_03:45:04:345] qmap_mode = 4, qmap_version = 5, qmap_size = 4096, muxid = 0x81, qmap_netcard = wwan0_1
 [04-13_03:45:04:345] Modem works in QMI mode
@@ -52,7 +52,7 @@ root@ZhuoTK:/# [04-13_03:45:04:340] Quectel_QConnectManager_Linux_V1.6.0.25
 [04-13_03:45:04:540] Get clientWDA = 1
 [04-13_03:45:04:571] requestBaseBandVersion EC25EFAR06A11M4G
 [04-13_03:45:04:602] qmap_settings.rx_urb_size = 4096
-[ 1609.700000] net wan: ul_data_aggregation_max_datagrams=11, ul_data_aggregation_max_size=4096, dl_minimum_padding=0
+[ 1609.700000] net wwan0: ul_data_aggregation_max_datagrams=11, ul_data_aggregation_max_size=4096, dl_minimum_padding=0
 [04-13_03:45:04:603] qmap_settings.ul_data_aggregation_max_datagrams  = 11
 [04-13_03:45:04:603] qmap_settings.ul_data_aggregation_max_size       = 4096
 [04-13_03:45:04:603] qmap_settings.dl_minimum_padding                 = 0
@@ -61,16 +61,16 @@ root@ZhuoTK:/# [04-13_03:45:04:340] Quectel_QConnectManager_Linux_V1.6.0.25
 [04-13_03:45:04:795] requestGetProfile[1] cmnet///0
 [04-13_03:45:04:827] requestRegistrationState2 MCC: 460, MNC: 0, PS: Attached, DataCap: LTE
 [04-13_03:45:04:858] requestQueryDataCall IPv4ConnectionStatus: DISCONNECTED
-[ 1609.960000] net wan: link_state 0x1 -> 0x0
-[04-13_03:45:04:865] ifconfig wan down
+[ 1609.960000] net wwan0: link_state 0x1 -> 0x0
+[04-13_03:45:04:865] ifconfig wwan0 down
 [04-13_03:45:04:879] ifconfig wwan0_1 0.0.0.0
 [04-13_03:45:04:889] ifconfig wwan0_1 down
 [04-13_03:45:04:955] requestSetupDataCall WdsConnectionIPv4Handle: 0x87253410
-[ 1610.180000] net wan: link_state 0x0 -> 0x1
-[04-13_03:45:05:087] ifconfig wan up
-[ 1610.200000] IPv6: ADDRCONF(NETDEV_UP): wan: link is not ready
+[ 1610.180000] net wwan0: link_state 0x0 -> 0x1
+[04-13_03:45:05:087] ifconfig wwan0 up
+[ 1610.200000] IPv6: ADDRCONF(NETDEV_UP): wwan0: link is not ready
 [04-13_03:45:05:105] ifconfig wwan0_1 up
-[ 1610.220000] IPv6: ADDRCONF(NETDEV_CHANGE): wan: link becomes ready
+[ 1610.220000] IPv6: ADDRCONF(NETDEV_CHANGE): wwan0: link becomes ready
 [04-13_03:45:05:125] you are use OpenWrt?
 [04-13_03:45:05:125] should not calling udhcpc manually?
 [04-13_03:45:05:125] should modify /etc/config/network as below?
@@ -90,7 +90,7 @@ root@ZhuoTK:/# quectel-CM -n 2 -s 4gnet &
 [04-13_03:45:10:764] Quectel_QConnectManager_Linux_V1.6.0.25
 [04-13_03:45:10:767] Find /sys/bus/usb/devices/1-1.3 idVendor=0x2c7c idProduct=0x125, bus=0x001, dev=0x008
 [04-13_03:45:10:768] Auto find qmichannel = /dev/cdc-wdm0
-[04-13_03:45:10:768] Auto find usbnet_adapter = wan
+[04-13_03:45:10:768] Auto find usbnet_adapter = wwan0
 [04-13_03:45:10:768] netcard driver = qmi_wwan_q, driver version = V1.2.0.23
 [04-13_03:45:10:769] qmap_mode = 4, qmap_version = 5, qmap_size = 4096, muxid = 0x82, qmap_netcard = wwan0_2
 [04-13_03:45:10:769] Modem works in QMI mode
@@ -110,8 +110,8 @@ root@ZhuoTK:/# quectel-CM -n 2 -s 4gnet &
 [ 1616.340000] IPv6: ADDRCONF(NETDEV_UP): wwan0_2: link is not ready
 [04-13_03:45:11:246] ifconfig wwan0_2 down
 [04-13_03:45:11:642] requestSetupDataCall WdsConnectionIPv4Handle: 0x87254580
-[ 1616.870000] net wan: link_state 0x1 -> 0x3
-[04-13_03:45:11:775] ifconfig wan up
+[ 1616.870000] net wwan0: link_state 0x1 -> 0x3
+[04-13_03:45:11:775] ifconfig wwan0 up
 [04-13_03:45:11:785] ifconfig wwan0_2 up
 [04-13_03:45:11:798] you are use OpenWrt?
 [04-13_03:45:11:798] should not calling udhcpc manually?
@@ -170,7 +170,7 @@ root@ZhuoTK:/# quectel-CM -k 2
 [04-13_03:46:30:811] /proc/2834/cmdline: quectel-CM -n 2 -s 4gnet
 [04-13_03:46:30:811] send SIGINT to process 2834
 [04-13_03:46:30:811] requestDeactivateDefaultPDP WdsConnectionIPv4Handle
-[ 1696.460000] net wan: link_state 0x3 -> 0x1
+[ 1696.460000] net wwan0: link_state 0x3 -> 0x1
 [04-13_03:46:31:361] ifconfig wwan0_2 0.0.0.0
 [04-13_03:46:31:373] ifconfig wwan0_2 down
 [04-13_03:46:31:516] QmiWwanThread exit
