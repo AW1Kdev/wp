@@ -99,8 +99,6 @@ typedef struct _QCQMI_HDR {
 
 static DECLARE_BITMAP(uci_minors, MAX_UCI_DEVICES);
 static struct mhi_uci_drv mhi_uci_drv;
-int mhi_device_uci_init(void);
-void mhi_device_uci_exit(void);
 
 static int mhi_queue_inbound(struct uci_dev *uci_dev)
 {
@@ -142,18 +140,24 @@ static long mhi_uci_ioctl(struct file *file,
 	long ret = -ERESTARTSYS;
 
 	mutex_lock(&uci_dev->mutex);
-
 	if (uci_dev->enabled) {
 		switch (cmd) {
 		case TCGETS:
-			ret = 0;
-			break;
+#ifndef TCGETS2
+			ret = kernel_termios_to_user_termios((struct termios __user *)arg, &uci_dev->termios);
+#else
+			ret = kernel_termios_to_user_termios_1((struct termios __user *)arg, &uci_dev->termios);
+#endif
+		break;
 
-		case TCSETS:
-		case TCSETSW:
 		case TCSETSF:
-			ret = 0;
-			break;
+		case TCSETS:
+#ifndef TCGETS2
+			ret = user_termios_to_kernel_termios(&uci_dev->termios, (struct termios __user *)arg);
+#else
+			ret = user_termios_to_kernel_termios_1(&uci_dev->termios, (struct termios __user *)arg);
+#endif
+		break;
 
 		case TIOCMSET:
 		case TIOCMBIS:
@@ -161,10 +165,10 @@ static long mhi_uci_ioctl(struct file *file,
 		{
 			uint32_t val;
 
-			ret = get_user(val, (uint32_t __user *)arg);
+			ret = get_user(val, (uint32_t *)arg);
 			if (ret)
-				break;
-
+				return ret;
+			
 			switch (cmd) {
 			case TIOCMBIS:
 				uci_dev->sigs |= val;
@@ -176,26 +180,22 @@ static long mhi_uci_ioctl(struct file *file,
 				uci_dev->sigs = val;
 				break;
 			}
-
-			ret = 0;
-			break;
 		}
+		break;
 
 		case TIOCMGET:
-			ret = put_user(uci_dev->sigs | TIOCM_RTS,
-				       (uint32_t __user *)arg);
-			break;
+			ret = put_user(uci_dev->sigs | TIOCM_RTS, (uint32_t *)arg);
+		break;
 
 		case TCFLSH:
 			ret = 0;
-			break;
-
+		break;
+		
 		default:
 			ret = mhi_ioctl(mhi_dev, cmd, arg);
-			break;
+		break;
 		}
 	}
-
 	mutex_unlock(&uci_dev->mutex);
 
 	return ret;
@@ -313,7 +313,7 @@ static ssize_t mhi_uci_write(struct file *file,
 
 		spin_unlock_bh(&uci_chan->lock);
 
- 		if (mhi_get_no_free_descriptors(mhi_dev, DMA_TO_DEVICE) == 0 && (file->f_mode & O_NDELAY))
+ 		if (mhi_get_no_free_descriptors(mhi_dev, DMA_TO_DEVICE) == 0 && (file->f_mode & FMODE_NDELAY))
 			break;
 
 		/* wait for free descriptors */
@@ -400,7 +400,7 @@ static ssize_t mhi_uci_read(struct file *file,
 
 		spin_unlock_bh(&uci_chan->lock);
 		
-		if (file->f_mode & O_NDELAY)
+		if (file->f_mode & FMODE_NDELAY)
 			return -EAGAIN;
 		
 		ret = wait_event_interruptible(uci_chan->wq,
@@ -759,7 +759,7 @@ int mhi_device_uci_init(void)
 		return ret;
 
 	mhi_uci_drv.major = ret;
-	mhi_uci_drv.class = class_create(MHI_UCI_DRIVER_NAME);
+	mhi_uci_drv.class = class_create(THIS_MODULE, MHI_UCI_DRIVER_NAME);
 	if (IS_ERR(mhi_uci_drv.class)) {
 		unregister_chrdev(mhi_uci_drv.major, MHI_UCI_DRIVER_NAME);
 		return -ENODEV;

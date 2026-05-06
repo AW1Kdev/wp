@@ -104,13 +104,6 @@ static struct pci_device_id mhi_pcie_device_id[] = {
 
 static struct pci_driver mhi_pcie_driver;
 
-int mhi_system_suspend(struct device *dev);
-int mhi_debugfs_trigger_m0(void *data, u64 val);
-int mhi_debugfs_trigger_m3(void *data, u64 val);
-int mhi_init_debugfs_debug_show(struct seq_file *m, void *d);
-int __init mhi_controller_qcom_init(void);
-void mhi_controller_qcom_exit(void);
-
 void mhi_deinit_pci_dev(struct mhi_controller *mhi_cntrl)
 {
 	struct mhi_dev *mhi_dev = mhi_controller_get_devdata(mhi_cntrl);

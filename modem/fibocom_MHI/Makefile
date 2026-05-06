@@ -18,8 +18,8 @@ define KernelPackage/pcie_mhi_fb
   SUBMENU:=WWAN Support
   TITLE:=Kernel pcie driver for MHI device
   DEPENDS:=+pciids +pciutils +fibocom-dial
-  FILES:=$(PKG_BUILD_DIR)/fibo_mhi.ko
-  AUTOLOAD:=$(call AutoLoad,90,fibo_mhi)
+  FILES:=$(PKG_BUILD_DIR)/pcie_mhi_fb.ko
+  AUTOLOAD:=$(call AutoLoad,90,pcie_mhi_fb)
 endef
 
 define KernelPackage/pcie_mhi_fb/description
